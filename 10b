@@ -1,0 +1,112 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+import 'package:counter_app/main.dart';
+
+void main() {
+
+  testWidgets('Initial counter value is 0',
+      (WidgetTester tester) async {
+
+    await tester.pumpWidget(const MyApp());
+
+    expect(find.text('0'), findsOneWidget);
+  });
+
+
+  testWidgets('Counter increments when button is tapped',
+      (WidgetTester tester) async {
+
+    await tester.pumpWidget(const MyApp());
+
+    expect(find.text('0'), findsOneWidget);
+
+    await tester.tap(find.byIcon(Icons.add));
+    await tester.pump();
+
+    expect(find.text('1'), findsOneWidget);
+  });
+
+
+  testWidgets('Counter decrements when button is tapped',
+      (WidgetTester tester) async {
+
+    await tester.pumpWidget(const MyApp());
+
+    await tester.tap(find.byIcon(Icons.add));
+    await tester.pump();
+
+    expect(find.text('1'), findsOneWidget);
+
+    await tester.tap(find.byIcon(Icons.remove));
+    await tester.pump();
+
+    expect(find.text('0'), findsOneWidget);
+  });
+
+
+  testWidgets('Counter never goes below zero',
+      (WidgetTester tester) async {
+
+    await tester.pumpWidget(const MyApp());
+
+    expect(find.text('0'), findsOneWidget);
+
+    await tester.tap(find.byIcon(Icons.remove));
+    await tester.pump();
+
+    expect(find.text('0'), findsOneWidget);
+  });
+
+
+  testWidgets('Counter text is displayed correctly',
+      (WidgetTester tester) async {
+
+    await tester.pumpWidget(const MyApp());
+
+    expect(
+      find.byKey(const Key('counterText')),
+      findsOneWidget,
+    );
+
+    expect(find.text('0'), findsOneWidget);
+  });
+
+
+  testWidgets('Counter reaches 10 without overflow',
+      (WidgetTester tester) async {
+
+    await tester.pumpWidget(const MyApp());
+
+    for (int i = 0; i < 10; i++) {
+      await tester.tap(find.byIcon(Icons.add));
+      await tester.pump();
+    }
+
+    expect(find.text('10'), findsOneWidget);
+
+    expect(tester.takeException(), isNull);
+  });
+}
+
+
+/*
+===================== TEST OUTPUT =====================
+
+00:00 +1: Initial counter value is 0
+00:00 +2: Counter increments when button is tapped
+00:00 +3: Counter decrements when button is tapped
+00:00 +4: Counter never goes below zero
+00:00 +5: Counter text is displayed correctly
+00:00 +6: Counter reaches 10 without overflow
+
+00:01 +6: All tests passed!
+
+========================================================
+
+Total Tests : 6
+Passed      : 6
+Failed      : 0
+
+========================================================
+*/
