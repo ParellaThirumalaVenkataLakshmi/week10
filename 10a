@@ -1,0 +1,192 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Counter App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const CounterScreen(),
+    );
+  }
+}
+
+class CounterScreen extends StatefulWidget {
+  const CounterScreen({super.key});
+
+  @override
+  State<CounterScreen> createState() => _CounterScreenState();
+}
+
+class _CounterScreenState extends State<CounterScreen> {
+  int _counter = 0;
+
+  // Increment counter
+  void _incrementCounter() {
+    print('Increment button pressed');
+
+    setState(() {
+      _counter++;
+    });
+  }
+
+  // Decrement counter
+  void _decrementCounter() {
+    print('Decrement button pressed');
+
+    setState(() {
+      if (_counter > 0) {
+        _counter--;
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Counter App'),
+        centerTitle: true,
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+
+              const Text(
+                'Counter Value',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              // FittedBox prevents overflow
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.blue.shade50,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    '$_counter',
+                    key: const Key('counterText'),
+                    style: const TextStyle(
+                      fontSize: 60,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 30),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+
+                  // Decrement button
+                  ElevatedButton.icon(
+                    onPressed: _decrementCounter,
+                    icon: const Icon(Icons.remove),
+                    label: const Text('Decrease'),
+                  ),
+
+                  const SizedBox(width: 20),
+
+                  // Increment button
+                  ElevatedButton.icon(
+                    onPressed: _incrementCounter,
+                    icon: const Icon(Icons.add),
+                    label: const Text('Increase'),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+/*
+======================== OUTPUT ========================
+
+Initial Output:
+
+              Counter App
+        ----------------------
+              Counter Value
+
+                  0
+
+        [ - Decrease ] [ + Increase ]
+
+
+After clicking Increase:
+
+              Counter App
+        ----------------------
+              Counter Value
+
+                  1
+
+        [ - Decrease ] [ + Increase ]
+
+
+After clicking Increase 10 times:
+
+              Counter App
+        ----------------------
+              Counter Value
+
+                 10
+
+        [ - Decrease ] [ + Increase ]
+
+
+After clicking Decrease:
+
+              Counter App
+        ----------------------
+              Counter Value
+
+                  9
+
+        [ - Decrease ] [ + Increase ]
+
+
+If Decrease is clicked when counter = 0:
+
+              Counter App
+        ----------------------
+              Counter Value
+
+                  0
+
+        [ - Decrease ] [ + Increase ]
+
+Counter will NOT become negative.
+
+No layout overflow occurs when counter reaches 10 or higher.
+
+=========================================================
+*/
